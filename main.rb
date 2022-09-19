@@ -3,11 +3,11 @@ require_relative 'lib/game'
 
 
 def main
-  # loop do
+  loop do
     game = ConnectFourGame.new
     game.play
-  #   break if !another_game?
-  # end
+    break if !another_game?
+  end
 end
 
 def another_game?

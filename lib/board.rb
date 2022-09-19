@@ -18,7 +18,16 @@ class Board
   end
 
   def update_board(row, column, symbol)
-    grid[row][column] = symbol
+    @grid[row][column] = symbol
+  end
+
+  def free_row(column)
+    row = 0
+    loop do 
+      return row if row == 5 || @grid[row + 1][column] != empty_circle
+
+    row += 1
+    end
   end
 
   def game_over?(symbol)
