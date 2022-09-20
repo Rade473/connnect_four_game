@@ -30,45 +30,68 @@ class Board
     end
   end
 
+  def full_column?(column)
+    return true if grid[0][column] != empty_circle
+  end
+
   def game_over?(symbol)
-    check_horizontal(symbol)
-    check_vertical(symbol)
-    check_diagonal_left(symbol)
-    check_diagonal_right(symbol)
+    return true if check_horizontal(symbol)
+    return true if check_vertical(symbol)
+    return true if check_diagonal_left(symbol)
+    return true if check_diagonal_right(symbol)
   end
 
   def check_horizontal(symbol)
-    grid.each do |row|
-      row.each_with_index do |e, i|
-        return true if row[i] == symbol && row[i + 1] == symbol && row[i + 2] == symbol && row[i + 3] == symbol 
+    result = false
+    @grid.each do |row|
+      row.each_with_index do |_e, i|
+        if row[i] == symbol && row[i + 1] == symbol && row[i + 2] == symbol && row[i + 3] == symbol
+          result = true
+        end
       end
     end
+    result
   end
 
   def check_diagonal_right(symbol)
-    grid.each_with_index do |row, i|
+    result = false
+    @grid.each_with_index do |row, i|
       row.each_with_index do |_e, j|
-        return true if grid[i][j] == symbol && grid[i + 1][j + 1] == symbol && grid[i + 2][j + 2] == symbol && grid[i + 3][j + 3] == symbol 
+        unless i > 2 || j > 3
+          if grid[i][j] == symbol && grid[i + 1][j + 1] == symbol && grid[i + 2][j + 2] == symbol && grid[i + 3][j + 3] == symbol 
+          result = true
+          end
+        end
       end
     end
+    result
   end
 
   def check_diagonal_left(symbol)
-    grid.each_with_index do |row, i|
+    result = false
+    @grid.each_with_index do |row, i|
       row.each_with_index do |_e, j|
-        return true if 
-        grid[i][j] == symbol && grid[i - 1][j - 1] == symbol &&
-        grid[i - 2][j - 2] == symbol && grid[i - 3][j - 3] == symbol
+        unless i < 2 
+          if  grid[i][j] == symbol && grid[i - 1][j + 1] == symbol && grid[i - 2][j + 2] == symbol && grid[i - 3][j + 3] == symbol
+          result = true
+          end
+        end
       end
     end
+    result
   end
 
   def check_vertical(symbol)
-    grid.transpose.each do |row|
-      row.each_with_index do |e, i|
-        return true if row[i] == symbol && row[i + 1] == symbol && row[i + 2] == symbol && row[i + 3] == symbol 
+    result = false
+    reverse_grid = @grid.transpose
+    reverse_grid.each do |row|
+      row.each_with_index do |_e, i|
+       if row[i] == symbol && row[i + 1] == symbol && row[i + 2] == symbol && row[i + 3] == symbol 
+       result = true
+       end
       end
     end
+    result
   end
 
 end

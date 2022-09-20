@@ -24,6 +24,17 @@ class ConnectFourGame
       board.display_board
       column = player_input(player)
       board.update_board(board.free_row(column), column, player.symbol)
+      break if board.game_over?(player.symbol) || draw?
+    end
+    board.display_board
+    if board.game_over?(player1.symbol)
+      puts "#{player1.symbol} #{player1.name} has won the game in #{@turn} turns"
+    end
+    if board.game_over?(player2.symbol)
+      puts "#{player2.symbol} #{player1.name} has won the game in #{@turn} turns"
+    end
+    if draw?
+      puts 'Game ended in a draw after 42 turns'
     end
   end
 
@@ -36,15 +47,24 @@ class ConnectFourGame
     end
   end
 
+  def draw?
+    return true if @turn == 42
+  end
+
   def player_input(player)
     loop do
     puts "#{player.symbol} #{player.name}"
     puts 'Please enter a number from 1-7 to place your chip'
     column = gets.chomp.to_i - 1
-    return column if column.between?(0,6)
+      
+    return column if verify_input?(column)
 
     puts "Wrong input \n "
     end
+  end
+
+  def verify_input?(column)
+    column.between?(0,6) && !board.full_column?(column)
   end
 
 
